@@ -2,19 +2,19 @@ import { Container } from "inversify";
 import "reflect-metadata";
 
 // Interfaces
-import { ISurveyRepository } from "../../Core/Application/Interfaces/ISurveyRepository";
+import { ISurveyRepository } from "../../Core/Application/Interfaces/ISurveyRepository.js";
 
 // Implementations
-import { MongoSurveyRepository } from "../Persistence/Repositories/MongoSurveyRepository";
+import { MongoSurveyRepository } from "../Persistence/Repositories/MongoSurveyRepository.js";
 
 // Use Cases
-import { SubmitSurveyUseCase } from "../../Core/Application/UseCases/SubmitSurveyUseCase";
-import { GetAllSurveysUseCase } from "../../Core/Application/UseCases/GetAllSurveysUseCase";
-import { AdminLoginUseCase } from "../../Core/Application/UseCases/AdminLoginUseCase";
-import { SurveyMapper } from "../../Core/Application/Mappers/SurveyMapper";
-import { SurveyValidator } from "../../Core/Application/Validators/SurveyValidator";
-import { SurveyController } from "../../Presentation/Controllers/SurveyController";
-import { AuthController } from "../../Presentation/Controllers/AuthController";
+import { SubmitSurveyUseCase } from "../../Core/Application/UseCases/SubmitSurveyUseCase.js";
+import { GetAllSurveysUseCase } from "../../Core/Application/UseCases/GetAllSurveysUseCase.js";
+import { AdminLoginUseCase } from "../../Core/Application/UseCases/AdminLoginUseCase.js";
+import { SurveyMapper } from "../../Core/Application/Mappers/SurveyMapper.js";
+import { SurveyValidator } from "../../Core/Application/Validators/SurveyValidator.js";
+import { SurveyController } from "../../Presentation/Controllers/SurveyController.js";
+import { AuthController } from "../../Presentation/Controllers/AuthController.js";
 
 const container = new Container();
 

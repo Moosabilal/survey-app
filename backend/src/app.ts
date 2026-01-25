@@ -3,17 +3,21 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import surveyRoutes from "./Presentation/Routes/surveyRoutes";
-import authRoutes from "./Presentation/Routes/authRoutes";
+import surveyRoutes from "./Presentation/Routes/surveyRoutes.js";
+import authRoutes from "./Presentation/Routes/authRoutes.js";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/survey_app";
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: FRONTEND_URL,
+    credentials: true
+}));
 app.use(express.json());
 
 // Routes

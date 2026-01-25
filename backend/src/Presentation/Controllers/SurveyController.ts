@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { injectable, inject } from "inversify";
-import { SubmitSurveyUseCase } from "../../Core/Application/UseCases/SubmitSurveyUseCase";
-import { GetAllSurveysUseCase } from "../../Core/Application/UseCases/GetAllSurveysUseCase";
-import { SurveySubmissionDTO } from "../../Core/Application/DTOs/SurveySubmissionDTO";
-import { SurveyValidator } from "../../Core/Application/Validators/SurveyValidator";
+import { SubmitSurveyUseCase } from "../../Core/Application/UseCases/SubmitSurveyUseCase.js";
+import { GetAllSurveysUseCase } from "../../Core/Application/UseCases/GetAllSurveysUseCase.js";
+import { SurveySubmissionDTO } from "../../Core/Application/DTOs/SurveySubmissionDTO.js";
+import { SurveyValidator } from "../../Core/Application/Validators/SurveyValidator.js";
 
 @injectable()
 export class SurveyController {

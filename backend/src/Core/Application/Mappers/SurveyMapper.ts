@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
-import { Survey } from "../../Domain/Entities/Survey";
-import { ISurveyDocument } from "../../../Infrastructure/Persistence/Mongo/SurveySchema";
+import { Survey } from "../../Domain/Entities/Survey.js";
+import { ISurveyDocument } from "../../../Infrastructure/Persistence/Mongo/SurveySchema.js";
 
 @injectable()
 export class SurveyMapper {

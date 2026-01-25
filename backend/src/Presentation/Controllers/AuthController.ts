@@ -12,8 +12,8 @@ export class AuthController {
 
     async login(req: Request, res: Response) {
         try {
-            const { password } = req.body;
-            const success = this._adminLoginUseCase.execute(password);
+            const { email, password } = req.body;
+            const success = this._adminLoginUseCase.execute(email, password);
             if (success) {
                 res.status(200).json({ message: "Login successful", token: "admin-token-placeholder" });
             } else {

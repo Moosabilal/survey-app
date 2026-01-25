@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const SurveyController_1 = require("../Controllers/SurveyController");
+const container_1 = require("../../Infrastructure/IOC/container");
+const router = (0, express_1.Router)();
+const controller = container_1.container.get(SurveyController_1.SurveyController);
+router.post("/submit", (req, res) => controller.submit(req, res));
+router.get("/all", (req, res) => controller.getAll(req, res));
+exports.default = router;

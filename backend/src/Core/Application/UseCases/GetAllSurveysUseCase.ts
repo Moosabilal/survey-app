@@ -1,6 +1,6 @@
 import { inject, injectable } from "inversify";
-import { ISurveyRepository } from "../Interfaces/ISurveyRepository.js";
-import { Survey } from "../../Domain/Entities/Survey.js";
+import { ISurveyRepository } from "../Interfaces/ISurveyRepository";
+import { Survey } from "../../Domain/Entities/Survey";
 
 @injectable()
 export class GetAllSurveysUseCase {

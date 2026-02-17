@@ -1,8 +1,8 @@
 import { injectable, inject } from "inversify";
-import { ISurveyRepository } from "../../../Core/Application/Interfaces/ISurveyRepository.js";
-import { Survey } from "../../../Core/Domain/Entities/Survey.js";
-import { SurveyModel, ISurveyDocument } from "../Mongo/SurveySchema.js";
-import { SurveyMapper } from "../../../Core/Application/Mappers/SurveyMapper.js";
+import { ISurveyRepository } from "../../../Core/Application/Interfaces/ISurveyRepository";
+import { Survey } from "../../../Core/Domain/Entities/Survey";
+import { SurveyModel } from "../Mongo/SurveySchema";
+import { SurveyMapper } from "../../../Core/Application/Mappers/SurveyMapper";
 
 @injectable()
 export class MongoSurveyRepository implements ISurveyRepository {

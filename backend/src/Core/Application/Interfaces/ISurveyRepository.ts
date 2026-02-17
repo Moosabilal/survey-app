@@ -1,4 +1,4 @@
-import { Survey } from "../../Domain/Entities/Survey.js";
+import { Survey } from "../../Domain/Entities/Survey";
 
 export interface ISurveyRepository {
     save(survey: Survey): Promise<Survey>;

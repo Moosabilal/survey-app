@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { AuthController } from "../Controllers/AuthController.js";
-import { container } from "../../Infrastructure/IOC/container.js";
+import { AuthController } from "../Controllers/AuthController";
+import { container } from "../../Infrastructure/IOC/container";
 
 const router = Router();
 const controller = container.get<AuthController>(AuthController);

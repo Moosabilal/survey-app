@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify";
-import { ISurveyRepository } from "../Interfaces/ISurveyRepository.js";
-import { SurveySubmissionDTO } from "../DTOs/SurveySubmissionDTO.js";
-import { Survey } from "../../Domain/Entities/Survey.js";
+import { ISurveyRepository } from "../Interfaces/ISurveyRepository";
+import { SurveySubmissionDTO } from "../DTOs/SurveySubmissionDTO";
+import { Survey } from "../../Domain/Entities/Survey";
 
 @injectable()
 export class SubmitSurveyUseCase {

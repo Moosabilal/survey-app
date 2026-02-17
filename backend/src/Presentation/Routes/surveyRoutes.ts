@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { SurveyController } from "../Controllers/SurveyController.js";
-import { container } from "../../Infrastructure/IOC/container.js";
+import { SurveyController } from "../Controllers/SurveyController";
+import { container } from "../../Infrastructure/IOC/container";
 
 const router = Router();
 const controller = container.get<SurveyController>(SurveyController);

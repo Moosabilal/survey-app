@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { injectable, inject } from "inversify";
-import { AdminLoginUseCase } from "../../Core/Application/UseCases/AdminLoginUseCase.js";
+import { AdminLoginUseCase } from "../../Core/Application/UseCases/AdminLoginUseCase";
 
 @injectable()
 export class AuthController {

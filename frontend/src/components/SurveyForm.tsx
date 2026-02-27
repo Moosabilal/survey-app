@@ -65,15 +65,15 @@ const SurveyForm: React.FC = () => {
 
     const inputClasses = (hasError: boolean) => `
         w-full pl-10 p-3 border rounded-lg outline-none transition-all duration-200
-        ${hasError 
-            ? 'border-red-500 bg-red-50 focus:ring-2 focus:ring-red-200' 
+        ${hasError
+            ? 'border-red-500 bg-red-50 focus:ring-2 focus:ring-red-200'
             : 'border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 bg-gray-50 focus:bg-white'}
     `;
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
             <div className="max-w-3xl w-full bg-white rounded-2xl shadow-xl overflow-hidden">
-                
+
                 <div className="bg-blue-600 p-8 text-center">
                     <h2 className="text-3xl font-bold text-white tracking-wide">Survey Form</h2>
                     <p className="mt-2 text-blue-100">We value your feedback. Please fill out the details below.</p>
@@ -95,21 +95,20 @@ const SurveyForm: React.FC = () => {
 
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            
-                            {/* Name Input */}
+
                             <div className="space-y-2">
                                 <label className="text-sm font-semibold text-gray-600">Full Name</label>
                                 <div className="relative">
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <FiUser className="h-5 w-5 text-gray-400" />
                                     </div>
-                                    <input 
-                                        type="text" 
-                                        name="name" 
-                                        placeholder="John Doe" 
-                                        value={formData.name} 
-                                        onChange={handleChange} 
-                                        className={inputClasses(!!errors.name)} 
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        placeholder="John Doe"
+                                        value={formData.name}
+                                        onChange={handleChange}
+                                        className={inputClasses(!!errors.name)}
                                     />
                                 </div>
                                 {errors.name && <p className="text-red-500 text-xs mt-1 ml-1">{errors.name}</p>}
@@ -118,11 +117,11 @@ const SurveyForm: React.FC = () => {
                             <div className="space-y-2">
                                 <label className="text-sm font-semibold text-gray-600">Gender</label>
                                 <div className="relative">
-                                    <select 
+                                    <select
                                         name="gender"
                                         title='Gender'
-                                        value={formData.gender} 
-                                        onChange={handleChange} 
+                                        value={formData.gender}
+                                        onChange={handleChange}
                                         className={inputClasses(!!errors.gender)}
                                     >
                                         <option value="">Select Gender</option>
@@ -140,13 +139,13 @@ const SurveyForm: React.FC = () => {
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <FiMail className="h-5 w-5 text-gray-400" />
                                     </div>
-                                    <input 
-                                        type="email" 
-                                        name="email" 
-                                        placeholder="john@example.com" 
-                                        value={formData.email} 
-                                        onChange={handleChange} 
-                                        className={inputClasses(!!errors.email)} 
+                                    <input
+                                        type="text"
+                                        name="email"
+                                        placeholder="john@example.com"
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        className={inputClasses(!!errors.email)}
                                     />
                                 </div>
                                 {errors.email && <p className="text-red-500 text-xs mt-1 ml-1">{errors.email}</p>}
@@ -158,31 +157,31 @@ const SurveyForm: React.FC = () => {
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <FiPhone className="h-5 w-5 text-gray-400" />
                                     </div>
-                                    <input 
-                                        type="tel" 
-                                        name="phone" 
-                                        placeholder="+1 234 567 890" 
-                                        value={formData.phone} 
-                                        onChange={handleChange} 
-                                        className={inputClasses(!!errors.phone)} 
+                                    <input
+                                        type="text"
+                                        name="phone"
+                                        placeholder="+1 234 567 890"
+                                        value={formData.phone}
+                                        onChange={handleChange}
+                                        className={inputClasses(!!errors.phone)}
                                     />
                                 </div>
                                 {errors.phone && <p className="text-red-500 text-xs mt-1 ml-1">{errors.phone}</p>}
                             </div>
 
-                             <div className="space-y-2 col-span-1 md:col-span-2">
+                            <div className="space-y-2 col-span-1 md:col-span-2">
                                 <label className="text-sm font-semibold text-gray-600">Nationality</label>
                                 <div className="relative">
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <FiFlag className="h-5 w-5 text-gray-400" />
                                     </div>
-                                    <input 
-                                        type="text" 
-                                        name="nationality" 
-                                        placeholder="Enter Nationality" 
-                                        value={formData.nationality} 
-                                        onChange={handleChange} 
-                                        className={inputClasses(!!errors.nationality)} 
+                                    <input
+                                        type="text"
+                                        name="nationality"
+                                        placeholder="Enter Nationality"
+                                        value={formData.nationality}
+                                        onChange={handleChange}
+                                        className={inputClasses(!!errors.nationality)}
                                     />
                                 </div>
                                 {errors.nationality && <p className="text-red-500 text-xs mt-1 ml-1">{errors.nationality}</p>}
@@ -195,12 +194,12 @@ const SurveyForm: React.FC = () => {
                                 <div className="absolute top-3 left-3 pointer-events-none">
                                     <FiMapPin className="h-5 w-5 text-gray-400" />
                                 </div>
-                                <textarea 
-                                    name="address" 
-                                    placeholder="Full street address..." 
-                                    value={formData.address} 
-                                    onChange={handleChange} 
-                                    className={`${inputClasses(!!errors.address)} h-24 pl-10`} 
+                                <textarea
+                                    name="address"
+                                    placeholder="Full street address..."
+                                    value={formData.address}
+                                    onChange={handleChange}
+                                    className={`${inputClasses(!!errors.address)} h-24 pl-10`}
                                 />
                             </div>
                             {errors.address && <p className="text-red-500 text-xs mt-1 ml-1">{errors.address}</p>}
@@ -208,21 +207,21 @@ const SurveyForm: React.FC = () => {
 
                         <div className="space-y-2">
                             <label className="text-sm font-semibold text-gray-600">Additional Message (Optional)</label>
-                            <textarea 
-                                name="message" 
-                                placeholder="Any feedback or suggestions..." 
-                                value={formData.message} 
-                                onChange={handleChange} 
-                                className="w-full p-3 border border-gray-200 rounded-lg outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 bg-gray-50 focus:bg-white transition-all h-24" 
+                            <textarea
+                                name="message"
+                                placeholder="Any feedback or suggestions..."
+                                value={formData.message}
+                                onChange={handleChange}
+                                className="w-full p-3 border border-gray-200 rounded-lg outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 bg-gray-50 focus:bg-white transition-all h-24"
                             />
                         </div>
 
-                        <button 
-                            type="submit" 
+                        <button
+                            type="submit"
                             disabled={loading}
                             className={`w-full py-3 px-4 rounded-lg text-white font-semibold tracking-wide shadow-md transition-all duration-200 
-                                ${loading 
-                                    ? 'bg-blue-400 cursor-not-allowed' 
+                                ${loading
+                                    ? 'bg-blue-400 cursor-not-allowed'
                                     : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 hover:shadow-lg transform hover:-translate-y-0.5'
                                 }`}
                         >

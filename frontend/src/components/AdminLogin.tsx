@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { loginAdmin } from '../services/api';
 import { useNavigate } from 'react-router-dom';
-import { FiMail, FiLock, FiShield } from 'react-icons/fi'; // Icons for professional look
+import { FiMail, FiLock, FiShield } from 'react-icons/fi';
 
 const AdminLogin: React.FC = () => {
     const [formData, setFormData] = useState({
@@ -12,13 +12,36 @@ const AdminLogin: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
+    React.useEffect(() => {
+        const token = localStorage.getItem('adminToken');
+        if (token) {
+            navigate('/admin/dashboard');
+        }
+    }, [navigate]);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
         if (error) setError('');
     };
 
+    const validate = () => {
+        if (!formData.email) {
+            setError('Email is required');
+            return false;
+        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            setError('Email is invalid');
+            return false;
+        }
+        if (!formData.password) {
+            setError('Password is required');
+            return false;
+        }
+        return true;
+    };
+
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!validate()) return;
         setLoading(true);
         setError('');
 
@@ -28,7 +51,7 @@ const AdminLogin: React.FC = () => {
                 localStorage.setItem('adminToken', data.token);
                 navigate('/admin/dashboard');
             } else {
-                 setError('Login failed. Please check your credentials.');
+                setError('Login failed. Please check your credentials.');
             }
         } catch (err) {
             console.log(err);
@@ -45,7 +68,7 @@ const AdminLogin: React.FC = () => {
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-300 flex items-center justify-center p-4">
             <div className="max-w-md w-full bg-white rounded-2xl shadow-2xl overflow-hidden transform transition-all hover:scale-[1.01]">
-                
+
                 <div className="bg-slate-900 p-8 text-center">
                     <div className="mx-auto bg-slate-800 w-16 h-16 rounded-full flex items-center justify-center mb-4 shadow-inner">
                         <FiShield className="h-8 w-8 text-white" />
@@ -68,14 +91,13 @@ const AdminLogin: React.FC = () => {
                                 <div className={iconClass}>
                                     <FiMail className="h-5 w-5" />
                                 </div>
-                                <input 
-                                    type="email" 
+                                <input
+                                    type="text"
                                     name="email"
-                                    placeholder="admin@company.com" 
-                                    value={formData.email} 
-                                    onChange={handleChange} 
-                                    required 
-                                    className={inputClass} 
+                                    placeholder="admin@company.com"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    className={inputClass}
                                 />
                             </div>
                         </div>
@@ -86,24 +108,23 @@ const AdminLogin: React.FC = () => {
                                 <div className={iconClass}>
                                     <FiLock className="h-5 w-5" />
                                 </div>
-                                <input 
-                                    type="password" 
+                                <input
+                                    type="password"
                                     name="password"
-                                    placeholder="••••••••" 
-                                    value={formData.password} 
-                                    onChange={handleChange} 
-                                    required 
-                                    className={inputClass} 
+                                    placeholder="••••••••"
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                    className={inputClass}
                                 />
                             </div>
                         </div>
 
-                        <button 
-                            type="submit" 
+                        <button
+                            type="submit"
                             disabled={loading}
                             className={`w-full py-3 px-4 rounded-lg text-white font-bold tracking-wide shadow-lg transition-all duration-300
-                                ${loading 
-                                    ? 'bg-slate-500 cursor-not-allowed' 
+                                ${loading
+                                    ? 'bg-slate-500 cursor-not-allowed'
                                     : 'bg-slate-900 hover:bg-slate-800 hover:shadow-xl transform hover:-translate-y-0.5'
                                 }`}
                         >
@@ -119,7 +140,7 @@ const AdminLogin: React.FC = () => {
                         </button>
                     </form>
                 </div>
-                
+
                 <div className="bg-gray-50 py-4 text-center border-t border-gray-100">
                     <p className="text-xs text-gray-500">Authorized personnel only. All activities are monitored.</p>
                 </div>

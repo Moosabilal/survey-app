@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { injectable, inject } from "inversify";
-import { AdminLoginUseCase } from "../../Core/Application/UseCases/AdminLoginUseCase";
+import { IAdminLoginUseCase } from "../../Core/Application/Interfaces/UseCases/IAdminLoginUseCase";
 
 @injectable()
 export class AuthController {
-    private _adminLoginUseCase: AdminLoginUseCase;
+    private _adminLoginUseCase: IAdminLoginUseCase;
 
-    constructor(@inject(AdminLoginUseCase) adminLoginUseCase: AdminLoginUseCase) {
+    constructor(@inject("IAdminLoginUseCase") adminLoginUseCase: IAdminLoginUseCase) {
         this._adminLoginUseCase = adminLoginUseCase;
     }
 

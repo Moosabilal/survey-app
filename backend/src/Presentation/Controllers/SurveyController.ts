@@ -1,19 +1,19 @@
 import { Request, Response } from "express";
 import { injectable, inject } from "inversify";
-import { SubmitSurveyUseCase } from "../../Core/Application/UseCases/SubmitSurveyUseCase";
-import { GetAllSurveysUseCase } from "../../Core/Application/UseCases/GetAllSurveysUseCase";
+import { ISubmitSurveyUseCase } from "../../Core/Application/Interfaces/UseCases/ISubmitSurveyUseCase";
+import { IGetAllSurveysUseCase } from "../../Core/Application/Interfaces/UseCases/IGetAllSurveysUseCase";
 import { SurveySubmissionDTO } from "../../Core/Application/DTOs/SurveySubmissionDTO";
 import { SurveyValidator } from "../../Core/Application/Validators/SurveyValidator";
 
 @injectable()
 export class SurveyController {
-    private _submitSurveyUseCase: SubmitSurveyUseCase;
-    private _getAllSurveysUseCase: GetAllSurveysUseCase;
+    private _submitSurveyUseCase: ISubmitSurveyUseCase;
+    private _getAllSurveysUseCase: IGetAllSurveysUseCase;
     private _validator: SurveyValidator;
 
     constructor(
-        @inject(SubmitSurveyUseCase) submitSurveyUseCase: SubmitSurveyUseCase,
-        @inject(GetAllSurveysUseCase) getAllSurveysUseCase: GetAllSurveysUseCase,
+        @inject("ISubmitSurveyUseCase") submitSurveyUseCase: ISubmitSurveyUseCase,
+        @inject("IGetAllSurveysUseCase") getAllSurveysUseCase: IGetAllSurveysUseCase,
         @inject(SurveyValidator) validator: SurveyValidator
     ) {
         this._submitSurveyUseCase = submitSurveyUseCase;

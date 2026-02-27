@@ -13,13 +13,17 @@ import { SurveyValidator } from "../../Core/Application/Validators/SurveyValidat
 import { SurveyController } from "../../Presentation/Controllers/SurveyController";
 import { AuthController } from "../../Presentation/Controllers/AuthController";
 
+import { ISubmitSurveyUseCase } from "../../Core/Application/Interfaces/UseCases/ISubmitSurveyUseCase";
+import { IGetAllSurveysUseCase } from "../../Core/Application/Interfaces/UseCases/IGetAllSurveysUseCase";
+import { IAdminLoginUseCase } from "../../Core/Application/Interfaces/UseCases/IAdminLoginUseCase";
+
 const container = new Container();
 
 container.bind<ISurveyRepository>("ISurveyRepository").to(MongoSurveyRepository);
 
-container.bind<SubmitSurveyUseCase>(SubmitSurveyUseCase).toSelf();
-container.bind<GetAllSurveysUseCase>(GetAllSurveysUseCase).toSelf();
-container.bind<AdminLoginUseCase>(AdminLoginUseCase).toSelf();
+container.bind<ISubmitSurveyUseCase>("ISubmitSurveyUseCase").to(SubmitSurveyUseCase);
+container.bind<IGetAllSurveysUseCase>("IGetAllSurveysUseCase").to(GetAllSurveysUseCase);
+container.bind<IAdminLoginUseCase>("IAdminLoginUseCase").to(AdminLoginUseCase);
 
 container.bind<SurveyMapper>(SurveyMapper).toSelf();
 container.bind<SurveyValidator>(SurveyValidator).toSelf();

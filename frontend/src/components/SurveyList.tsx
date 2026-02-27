@@ -25,10 +25,53 @@ const SurveyList: React.FC = () => {
         fetchData();
     }, [navigate]);
 
+    const exportToCSV = () => {
+        if (surveys.length === 0) return;
+
+        const headers = ["Name", "Gender", "Nationality", "Email", "Phone", "Message"];
+        const csvRows = [
+            headers.join(','),
+            ...surveys.map(s => [
+                `"${s.name}"`,
+                `"${s.gender}"`,
+                `"${s.nationality}"`,
+                `"${s.email}"`,
+                `"${s.phone}"`,
+                `"${s.message.replace(/"/g, '""')}"`
+            ].join(','))
+        ];
+
+        const csvContent = csvRows.join('\n');
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", `survey_submissions_${new Date().toISOString().split('T')[0]}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     return (
         <div className="max-w-6xl mx-auto p-6">
-            <h2 className="text-3xl font-bold mb-6 text-gray-800">Survey Submissions</h2>
-            <button onClick={() => { localStorage.removeItem('adminToken'); navigate('/admin/login'); }} className="mb-4 bg-red-500 text-white px-4 py-2 rounded">Logout</button>
+            <div className="flex justify-between items-center mb-6">
+                <h2 className="text-3xl font-bold text-gray-800">Survey Submissions</h2>
+                <div className="space-x-4">
+                    <button
+                        onClick={exportToCSV}
+                        className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow transition duration-200"
+                    >
+                        Export to CSV
+                    </button>
+                    <button
+                        onClick={() => { localStorage.removeItem('adminToken'); navigate('/admin/login'); }}
+                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded shadow transition duration-200"
+                    >
+                        Logout
+                    </button>
+                </div>
+            </div>
             <div className="overflow-x-auto bg-white shadow-md rounded-lg">
                 <table className="min-w-full leading-normal">
                     <thead>

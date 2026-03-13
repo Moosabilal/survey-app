@@ -1,5 +1,5 @@
 import { inject, injectable } from "inversify";
-import { ISurveyRepository } from "../Interfaces/ISurveyRepository";
+import { ISurveyRepository, PaginationOptions, PaginatedResult } from "../Interfaces/ISurveyRepository";
 import { Survey } from "../../Domain/Entities/Survey";
 import { IGetAllSurveysUseCase } from "../Interfaces/UseCases/IGetAllSurveysUseCase";
 
@@ -9,7 +9,7 @@ export class GetAllSurveysUseCase implements IGetAllSurveysUseCase {
         @inject("ISurveyRepository") private surveyRepository: ISurveyRepository
     ) { }
 
-    async execute(): Promise<Survey[]> {
-        return this.surveyRepository.findAll();
+    async execute(options: PaginationOptions): Promise<PaginatedResult<Survey>> {
+        return this.surveyRepository.findAll(options);
     }
 }

@@ -4,6 +4,9 @@ import { ISubmitSurveyUseCase } from "../../Core/Application/Interfaces/UseCases
 import { IGetAllSurveysUseCase } from "../../Core/Application/Interfaces/UseCases/IGetAllSurveysUseCase";
 import { SurveySubmissionDTO } from "../../Core/Application/DTOs/SurveySubmissionDTO";
 import { SurveyValidator } from "../../Core/Application/Validators/SurveyValidator";
+import { HttpStatus } from "../../Core/Domain/Enums/HttpStatus";
+import { Messages } from "../../Core/Application/Constants/Messages";
+import { ZodError } from "zod";
 
 @injectable()
 export class SurveyController {
@@ -25,25 +28,42 @@ export class SurveyController {
         try {
             const validation = this._validator.validate(req.body);
             if (!validation.success) {
-                res.status(400).json({ errors: (validation.error as any).errors });
+                const errors = validation.error instanceof ZodError ? validation.error.issues : validation.error;
+                res.status(HttpStatus.BAD_REQUEST).json({ errors });
                 return;
             }
 
             const { name, gender, nationality, email, phone, address, message } = req.body;
             const dto = new SurveySubmissionDTO(name, gender, nationality, email, phone, address, message);
             const result = await this._submitSurveyUseCase.execute(dto);
-            res.status(201).json(result);
-        } catch (error: any) {
-            res.status(500).json({ error: error.message });
+            res.status(HttpStatus.CREATED).json(result);
+        } catch (error: unknown) {
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error: error instanceof Error ? error.message : Messages.INTERNAL_SERVER_ERROR });
         }
     }
 
     async getAll(req: Request, res: Response) {
         try {
-            const result = await this._getAllSurveysUseCase.execute();
-            res.status(200).json(result);
-        } catch (error: any) {
-            res.status(500).json({ error: error.message });
+            const page = parseInt(req.query.page as string, 10) || 1;
+            const limit = parseInt(req.query.limit as string, 10) || 10;
+            const searchQuery = req.query.search as string | undefined;
+            const gender = req.query.gender as string | undefined;
+            const nationality = req.query.nationality as string | undefined;
+
+            const options = {
+                page,
+                limit,
+                searchQuery,
+                filters: {
+                    ...(gender ? { gender } : {}),
+                    ...(nationality ? { nationality } : {})
+                }
+            };
+
+            const result = await this._getAllSurveysUseCase.execute(options);
+            res.status(HttpStatus.OK).json(result);
+        } catch (error: unknown) {
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error: error instanceof Error ? error.message : Messages.INTERNAL_SERVER_ERROR });
         }
     }
 }

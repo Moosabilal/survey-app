@@ -27,8 +27,32 @@ export class MongoSurveyRepository implements ISurveyRepository {
         return this._mapper.toEntity(newSurvey);
     }
 
-    async findAll(): Promise<Survey[]> {
-        const docs = await SurveyModel.find().exec();
-        return docs.map(doc => this._mapper.toEntity(doc));
+    async findAll(options: import("../../../Core/Application/Interfaces/ISurveyRepository").PaginationOptions): Promise<import("../../../Core/Application/Interfaces/ISurveyRepository").PaginatedResult<Survey>> {
+        const { page, limit, searchQuery, filters } = options;
+        const query: Record<string, unknown> = {};
+
+        if (searchQuery) {
+            query.$or = [
+                { name: { $regex: searchQuery, $options: "i" } },
+                { email: { $regex: searchQuery, $options: "i" } }
+            ];
+        }
+
+        if (filters) {
+            if (filters.gender) query.gender = filters.gender;
+            if (filters.nationality) query.nationality = filters.nationality;
+        }
+
+        const skip = (page - 1) * limit;
+
+        const totalCount = await SurveyModel.countDocuments(query).exec();
+        const docs = await SurveyModel.find(query).skip(skip).limit(limit).exec();
+
+        return {
+            data: docs.map(doc => this._mapper.toEntity(doc)),
+            totalCount,
+            page,
+            totalPages: Math.ceil(totalCount / limit) || 1
+        };
     }
 }

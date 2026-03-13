@@ -13,7 +13,7 @@ export class SurveyValidator {
         message: z.string().optional()
     });
 
-    validate(data: any) {
+    validate(data: unknown) {
         return this.schema.safeParse(data);
     }
 }

@@ -1,5 +1,6 @@
 import { Survey } from "../../../Domain/Entities/Survey";
+import { PaginationOptions, PaginatedResult } from "../ISurveyRepository";
 
 export interface IGetAllSurveysUseCase {
-    execute(): Promise<Survey[]>;
+    execute(options: PaginationOptions): Promise<PaginatedResult<Survey>>;
 }

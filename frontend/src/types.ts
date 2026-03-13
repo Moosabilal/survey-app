@@ -19,3 +19,10 @@ export interface SurveySubmissionData {
     address: string;
     message: string;
 }
+
+export interface PaginatedSurveys {
+    data: Survey[];
+    totalCount: number;
+    page: number;
+    totalPages: number;
+}

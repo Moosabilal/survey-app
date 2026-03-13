@@ -5,7 +5,19 @@ import type { Survey } from '../types';
 
 const SurveyList: React.FC = () => {
     const [surveys, setSurveys] = useState<Survey[]>([]);
+    const [page, setPage] = useState(1);
+    const limit = 3;
+    const [search, setSearch] = useState('');
+    const [debouncedSearch, setDebouncedSearch] = useState('');
+    const [gender, setGender] = useState('');
+    const [nationality, setNationality] = useState('');
+    const [totalPages, setTotalPages] = useState(1);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const handler = setTimeout(() => setDebouncedSearch(search), 500);
+        return () => clearTimeout(handler);
+    }, [search]);
 
     useEffect(() => {
         const token = localStorage.getItem('adminToken');
@@ -16,14 +28,25 @@ const SurveyList: React.FC = () => {
 
         const fetchData = async () => {
             try {
-                const data = await getSurveys();
-                setSurveys(data);
+                const params: Record<string, string | number> = { page, limit };
+                if (debouncedSearch) params.search = debouncedSearch;
+                if (gender) params.gender = gender;
+                if (nationality) params.nationality = nationality;
+
+                const response = await getSurveys(params);
+                if (response && response.data) {
+                    setSurveys(response.data);
+                    setTotalPages(response.totalPages);
+                } else if (Array.isArray(response)) {
+                    setSurveys(response);
+                    setTotalPages(1);
+                }
             } catch (error) {
                 console.error("Failed to fetch surveys", error);
             }
         };
         fetchData();
-    }, [navigate]);
+    }, [navigate, page, limit, debouncedSearch, gender, nationality]);
 
     const exportToCSV = () => {
         if (surveys.length === 0) return;
@@ -72,6 +95,40 @@ const SurveyList: React.FC = () => {
                     </button>
                 </div>
             </div>
+
+            <div className="flex flex-col md:flex-row gap-4 mb-4">
+                <input
+                    type="text"
+                    placeholder="Search by name or email..."
+                    value={search}
+                    onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+                    className="border p-2 rounded w-full md:w-1/3"
+                />
+                <select
+                    value={gender}
+                    onChange={(e) => { setGender(e.target.value); setPage(1); }}
+                    className="border p-2 rounded"
+                >
+                    <option value="">All Genders</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+                <select
+                    value={nationality}
+                    onChange={(e) => { setNationality(e.target.value); setPage(1); }}
+                    className="border p-2 rounded"
+                >
+                    <option value="">All Nationalities</option>
+                    <option value="US">United States</option>
+                    <option value="UK">United Kingdom</option>
+                    <option value="Canada">Canada</option>
+                    <option value="Australia">Australia</option>
+                    <option value="India">India</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
             <div className="overflow-x-auto bg-white shadow-md rounded-lg">
                 <table className="min-w-full leading-normal">
                     <thead>
@@ -97,6 +154,24 @@ const SurveyList: React.FC = () => {
                         ))}
                     </tbody>
                 </table>
+            </div>
+
+            <div className="flex justify-between items-center mt-4">
+                <button
+                    onClick={() => setPage(Math.max(1, page - 1))}
+                    disabled={page === 1}
+                    className={`px-4 py-2 rounded ${page === 1 ? 'bg-gray-200 text-gray-500' : 'bg-blue-600 hover:bg-blue-700 text-white transition'}`}
+                >
+                    Previous
+                </button>
+                <span className="text-gray-700 font-medium">Page {page} of {totalPages}</span>
+                <button
+                    onClick={() => setPage(Math.min(totalPages, page + 1))}
+                    disabled={page === totalPages || totalPages === 0}
+                    className={`px-4 py-2 rounded ${page === totalPages || totalPages === 0 ? 'bg-gray-200 text-gray-500' : 'bg-blue-600 hover:bg-blue-700 text-white transition'}`}
+                >
+                    Next
+                </button>
             </div>
         </div>
     );

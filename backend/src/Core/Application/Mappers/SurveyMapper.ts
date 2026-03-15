@@ -13,7 +13,7 @@ export class SurveyMapper {
             doc.phone,
             doc.address,
             doc.message,
-            (doc._id as unknown) as string,
+            doc._id.toString(),
             doc.createdAt
         );
     }

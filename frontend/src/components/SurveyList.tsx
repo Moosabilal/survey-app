@@ -1,30 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { getSurveys } from '../services/api';
+import { getSurveys, logoutAdmin } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import type { Survey } from '../types';
+import { useDebounce } from '../hooks/useDebounce';
+import Pagination from './common/Pagination';
+import { ROUTES } from '../constants/routes';
 
 const SurveyList: React.FC = () => {
     const [surveys, setSurveys] = useState<Survey[]>([]);
     const [page, setPage] = useState(1);
-    const limit = 3;
+    const limit = 10;
     const [search, setSearch] = useState('');
-    const [debouncedSearch, setDebouncedSearch] = useState('');
     const [gender, setGender] = useState('');
     const [nationality, setNationality] = useState('');
     const [totalPages, setTotalPages] = useState(1);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const handler = setTimeout(() => setDebouncedSearch(search), 500);
-        return () => clearTimeout(handler);
-    }, [search]);
+    const debouncedSearch = useDebounce(search, 500);
 
     useEffect(() => {
-        const token = localStorage.getItem('adminToken');
-        if (!token) {
-            navigate('/admin/login');
-            return;
-        }
 
         const fetchData = async () => {
             try {
@@ -88,7 +82,14 @@ const SurveyList: React.FC = () => {
                         Export to CSV
                     </button>
                     <button
-                        onClick={() => { localStorage.removeItem('adminToken'); navigate('/admin/login'); }}
+                        onClick={async () => {
+                            try {
+                                await logoutAdmin();
+                                navigate(ROUTES.ADMIN_LOGIN);
+                            } catch (e) {
+                                console.error('Logout error', e);
+                            }
+                        }}
                         className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded shadow transition duration-200"
                     >
                         Logout
@@ -156,23 +157,11 @@ const SurveyList: React.FC = () => {
                 </table>
             </div>
 
-            <div className="flex justify-between items-center mt-4">
-                <button
-                    onClick={() => setPage(Math.max(1, page - 1))}
-                    disabled={page === 1}
-                    className={`px-4 py-2 rounded ${page === 1 ? 'bg-gray-200 text-gray-500' : 'bg-blue-600 hover:bg-blue-700 text-white transition'}`}
-                >
-                    Previous
-                </button>
-                <span className="text-gray-700 font-medium">Page {page} of {totalPages}</span>
-                <button
-                    onClick={() => setPage(Math.min(totalPages, page + 1))}
-                    disabled={page === totalPages || totalPages === 0}
-                    className={`px-4 py-2 rounded ${page === totalPages || totalPages === 0 ? 'bg-gray-200 text-gray-500' : 'bg-blue-600 hover:bg-blue-700 text-white transition'}`}
-                >
-                    Next
-                </button>
-            </div>
+            <Pagination
+                currentPage={page}
+                totalPages={totalPages}
+                onPageChange={setPage}
+            />
         </div>
     );
 };

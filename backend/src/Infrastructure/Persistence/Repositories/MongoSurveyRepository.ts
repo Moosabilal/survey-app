@@ -29,7 +29,12 @@ export class MongoSurveyRepository implements ISurveyRepository {
 
     async findAll(options: import("../../../Core/Application/Interfaces/ISurveyRepository").PaginationOptions): Promise<import("../../../Core/Application/Interfaces/ISurveyRepository").PaginatedResult<Survey>> {
         const { page, limit, searchQuery, filters } = options;
-        const query: Record<string, unknown> = {};
+        interface SearchQuery {
+            $or?: Array<{ name: { $regex: string, $options: string } } | { email: { $regex: string, $options: string } }>;
+            gender?: string;
+            nationality?: string;
+        }
+        const query: SearchQuery = {};
 
         if (searchQuery) {
             query.$or = [

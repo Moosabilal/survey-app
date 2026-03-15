@@ -35,8 +35,8 @@ const SurveyForm: React.FC = () => {
         }
         if (!formData.phone) {
             newErrors.phone = 'Phone is required';
-        } else if (!/^\d{10,}$/.test(formData.phone)) {
-            newErrors.phone = 'Phone number must be at least 10 digits';
+        } else if (!/^\d{10}$/.test(formData.phone)) {
+            newErrors.phone = 'Phone number must be 10 digits';
         }
         if (!formData.address) newErrors.address = 'Address is required';
 

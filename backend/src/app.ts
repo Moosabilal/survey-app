@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 import surveyRoutes from "./Presentation/Routes/surveyRoutes";
 import authRoutes from "./Presentation/Routes/authRoutes";
 
@@ -18,6 +19,7 @@ app.use(cors({
     credentials: true
 }));
 app.use(express.json());
+app.use(cookieParser());
 
 app.use("/api/surveys", surveyRoutes);
 app.use("/api/auth", authRoutes);

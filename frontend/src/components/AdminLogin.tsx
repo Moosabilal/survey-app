@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { loginAdmin } from '../services/api';
+import React, { useState, useEffect } from 'react';
+import { loginAdmin, verifyAdminSession } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import { FiMail, FiLock, FiShield } from 'react-icons/fi';
+import { ROUTES } from '../constants/routes';
 
 const AdminLogin: React.FC = () => {
     const [formData, setFormData] = useState({
@@ -9,14 +10,21 @@ const AdminLogin: React.FC = () => {
         password: ''
     });
     const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true); // Start as true during check
     const navigate = useNavigate();
 
-    React.useEffect(() => {
-        const token = localStorage.getItem('adminToken');
-        if (token) {
-            navigate('/admin/dashboard');
-        }
+    useEffect(() => {
+        const checkSession = async () => {
+            try {
+                await verifyAdminSession();
+                navigate(ROUTES.ADMIN_DASHBOARD);
+            } catch (error) {
+                console.log(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        checkSession();
     }, [navigate]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,15 +54,10 @@ const AdminLogin: React.FC = () => {
         setError('');
 
         try {
-            const data = await loginAdmin(formData.email, formData.password);
-            if (data.token) {
-                localStorage.setItem('adminToken', data.token);
-                navigate('/admin/dashboard');
-            } else {
-                setError('Login failed. Please check your credentials.');
-            }
-        } catch (err) {
-            console.log(err);
+            await loginAdmin(formData.email, formData.password);
+            navigate(ROUTES.ADMIN_DASHBOARD);
+        } catch (error: any) {
+            console.log(error);
             setError('Invalid email or password');
         } finally {
             setLoading(false);

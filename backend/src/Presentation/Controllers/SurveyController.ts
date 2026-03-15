@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { injectable, inject } from "inversify";
 import { ISubmitSurveyUseCase } from "../../Core/Application/Interfaces/UseCases/ISubmitSurveyUseCase";
 import { IGetAllSurveysUseCase } from "../../Core/Application/Interfaces/UseCases/IGetAllSurveysUseCase";
-import { SurveySubmissionDTO } from "../../Core/Application/DTOs/SurveySubmissionDTO";
 import { SurveyValidator } from "../../Core/Application/Validators/SurveyValidator";
 import { HttpStatus } from "../../Core/Domain/Enums/HttpStatus";
 import { Messages } from "../../Core/Application/Constants/Messages";
@@ -33,12 +32,16 @@ export class SurveyController {
                 return;
             }
 
-            const { name, gender, nationality, email, phone, address, message } = req.body;
-            const dto = new SurveySubmissionDTO(name, gender, nationality, email, phone, address, message);
-            const result = await this._submitSurveyUseCase.execute(dto);
+            const result = await this._submitSurveyUseCase.execute(req.body);
             res.status(HttpStatus.CREATED).json(result);
         } catch (error: unknown) {
-            res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error: error instanceof Error ? error.message : Messages.INTERNAL_SERVER_ERROR });
+            if (error instanceof ZodError) {
+                res.status(HttpStatus.BAD_REQUEST).json({ errors: error.issues });
+            } else if (error instanceof Error) {
+                res.status(HttpStatus.BAD_REQUEST).json({ error: error.message });
+            } else {
+                res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error: Messages.INTERNAL_SERVER_ERROR });
+            }
         }
     }
 
@@ -63,7 +66,11 @@ export class SurveyController {
             const result = await this._getAllSurveysUseCase.execute(options);
             res.status(HttpStatus.OK).json(result);
         } catch (error: unknown) {
-            res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error: error instanceof Error ? error.message : Messages.INTERNAL_SERVER_ERROR });
+            if (error instanceof Error) {
+                res.status(HttpStatus.BAD_REQUEST).json({ error: error.message });
+            } else {
+                res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error: Messages.INTERNAL_SERVER_ERROR });
+            }
         }
     }
 }

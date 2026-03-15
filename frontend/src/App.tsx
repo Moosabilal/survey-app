@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import SurveyForm from './components/SurveyForm';
 import AdminLogin from './components/AdminLogin';
 import SurveyList from './components/SurveyList';
+import { ROUTES } from './constants/routes';
 
 function App() {
   return (
@@ -11,16 +12,16 @@ function App() {
           <div className="container mx-auto flex justify-between items-center">
             <h1 className="text-xl font-bold text-blue-600">Survey App</h1>
             <div className="space-x-4">
-              <Link to="/" className="text-gray-600 hover:text-blue-600">Home</Link>
-              <Link to="/admin/login" className="text-gray-600 hover:text-blue-600">Admin</Link>
+              <Link to={ROUTES.HOME} className="text-gray-600 hover:text-blue-600">Home</Link>
+              <Link to={ROUTES.ADMIN_LOGIN} className="text-gray-600 hover:text-blue-600">Admin</Link>
             </div>
           </div>
         </nav>
 
         <Routes>
-          <Route path="/" element={<SurveyForm />} />
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<SurveyList />} />
+          <Route path={ROUTES.HOME} element={<SurveyForm />} />
+          <Route path={ROUTES.ADMIN_LOGIN} element={<AdminLogin />} />
+          <Route path={ROUTES.ADMIN_DASHBOARD} element={<SurveyList />} />
         </Routes>
       </div>
     </Router>

@@ -12,7 +12,6 @@ const SurveyList: React.FC = () => {
     const limit = 10;
     const [search, setSearch] = useState('');
     const [gender, setGender] = useState('');
-    const [nationality, setNationality] = useState('');
     const [totalPages, setTotalPages] = useState(1);
     const navigate = useNavigate();
 
@@ -25,7 +24,6 @@ const SurveyList: React.FC = () => {
                 const params: Record<string, string | number> = { page, limit };
                 if (debouncedSearch) params.search = debouncedSearch;
                 if (gender) params.gender = gender;
-                if (nationality) params.nationality = nationality;
 
                 const response = await getSurveys(params);
                 if (response && response.data) {
@@ -40,7 +38,7 @@ const SurveyList: React.FC = () => {
             }
         };
         fetchData();
-    }, [navigate, page, limit, debouncedSearch, gender, nationality]);
+    }, [navigate, page, limit, debouncedSearch, gender]);
 
     const exportToCSV = () => {
         if (surveys.length === 0) return;
@@ -115,19 +113,6 @@ const SurveyList: React.FC = () => {
                     <option value="Female">Female</option>
                     <option value="Other">Other</option>
                 </select>
-                <select
-                    value={nationality}
-                    onChange={(e) => { setNationality(e.target.value); setPage(1); }}
-                    className="border p-2 rounded"
-                >
-                    <option value="">All Nationalities</option>
-                    <option value="US">United States</option>
-                    <option value="UK">United Kingdom</option>
-                    <option value="Canada">Canada</option>
-                    <option value="Australia">Australia</option>
-                    <option value="India">India</option>
-                    <option value="Other">Other</option>
-                </select>
             </div>
 
             <div className="overflow-x-auto bg-white shadow-md rounded-lg">
@@ -136,7 +121,6 @@ const SurveyList: React.FC = () => {
                         <tr>
                             <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Name</th>
                             <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Gender</th>
-                            <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Nationality</th>
                             <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Email</th>
                             <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Phone</th>
                             <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Message</th>
@@ -147,7 +131,6 @@ const SurveyList: React.FC = () => {
                             <tr key={survey.id || survey._id}>
                                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">{survey.name}</td>
                                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">{survey.gender}</td>
-                                <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">{survey.nationality}</td>
                                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">{survey.email}</td>
                                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">{survey.phone}</td>
                                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">{survey.message}</td>

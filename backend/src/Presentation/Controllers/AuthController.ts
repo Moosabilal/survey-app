@@ -19,7 +19,7 @@ export class AuthController {
             if (token) {
                 res.cookie("adminToken", token, {
                     httpOnly: true,
-                    secure: false,
+                    secure: true,
                     sameSite: "none",
                     maxAge: 60 * 60 * 1000, //1h
                 });
@@ -39,7 +39,7 @@ export class AuthController {
     async logout(req: Request, res: Response) {
         res.clearCookie("adminToken", {
             httpOnly: true,
-            secure: false,
+            secure: true,
             sameSite: "none",
         });
         res.status(HttpStatus.OK).json({ message: "Logged out successfully" });

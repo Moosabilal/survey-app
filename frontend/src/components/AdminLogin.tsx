@@ -13,19 +13,19 @@ const AdminLogin: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const checkSession = async () => {
-            try {
-                await verifyAdminSession();
-                navigate(ROUTES.ADMIN_DASHBOARD);
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        checkSession();
-    }, [navigate]);
+    // useEffect(() => {
+    //     const checkSession = async () => {
+    //         try {
+    //             await verifyAdminSession();
+    //             navigate(ROUTES.ADMIN_DASHBOARD);
+    //         } catch (error) {
+    //             console.log(error);
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
+    //     checkSession();
+    // }, [navigate]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });

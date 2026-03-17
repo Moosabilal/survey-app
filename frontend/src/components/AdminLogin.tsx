@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { loginAdmin, verifyAdminSession } from '../services/api';
+import React, { useState } from 'react';
+import { loginAdmin } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import { FiMail, FiLock, FiShield } from 'react-icons/fi';
 import { ROUTES } from '../constants/routes';

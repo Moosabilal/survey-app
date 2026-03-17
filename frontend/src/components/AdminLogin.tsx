@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { loginAdmin, verifyAdminSession } from '../services/api';
+import React, { useState } from 'react';
+import { loginAdmin } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import { FiMail, FiLock, FiShield } from 'react-icons/fi';
 import { ROUTES } from '../constants/routes';
@@ -13,19 +13,19 @@ const AdminLogin: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const checkSession = async () => {
-            try {
-                await verifyAdminSession();
-                navigate(ROUTES.ADMIN_DASHBOARD);
-            } catch (error) {
-                console.log(error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        checkSession();
-    }, [navigate]);
+    // useEffect(() => {
+    //     const checkSession = async () => {
+    //         try {
+    //             await verifyAdminSession();
+    //             navigate(ROUTES.ADMIN_DASHBOARD);
+    //         } catch (error) {
+    //             console.log(error);
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
+    //     checkSession();
+    // }, [navigate]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -56,7 +56,7 @@ const AdminLogin: React.FC = () => {
         try {
             await loginAdmin(formData.email, formData.password);
             navigate(ROUTES.ADMIN_DASHBOARD);
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.log(error);
             setError('Invalid email or password');
         } finally {

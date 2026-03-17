@@ -1,4 +1,4 @@
-name: Deploy Survey App to AWS EC2
+name: CI/CD - Survey App
 
 on:
   push:
@@ -6,32 +6,62 @@ on:
       - main
 
 jobs:
-  deploy:
-    name: Deploy to EC2
+  # ── CI: Build & lint check ──────────────────────────────────────────────────
+  ci:
+    name: CI - Build Check
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+          cache-dependency-path: |
+            backend/package-lock.json
+            frontend/package-lock.json
+
+      - name: Install & build backend
+        working-directory: backend
+        run: |
+          npm ci
+          npm run build
+
+      - name: Install & build frontend
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run build
+
+  # ── CD: Deploy to EC2 (only if CI passes) ────────────────────────────────
+  cd:
+    name: CD - Deploy to EC2
+    runs-on: ubuntu-latest
+    needs: ci   # waits for CI job to succeed first
+
+    steps:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
+          key_path: ""
           script: |
             set -e
             cd ~/survey-app
             git pull origin main
 
-            # Build & restart backend
+            # Rebuild backend
             cd backend
             npm install
             npm run build
             pm2 restart survey-app-backend
 
-            # Build & restart frontend
+            # Rebuild frontend
             cd ../frontend
             npm install
             npm run build

@@ -20,8 +20,8 @@ export class AuthController {
                 res.cookie("adminToken", token, {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === "production",
-                    sameSite: "strict",
-                    maxAge: 3600000 // 1 hour
+                    sameSite: "none",
+                    maxAge: 60 * 60 * 1000 // 1hr
                 });
                 res.status(HttpStatus.OK).json({ message: Messages.LOGIN_SUCCESS });
             } else {
@@ -40,7 +40,7 @@ export class AuthController {
         res.clearCookie("adminToken", {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "strict"
+            sameSite: "none"
         });
         res.status(HttpStatus.OK).json({ message: "Logged out successfully" });
     }

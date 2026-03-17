@@ -20,7 +20,7 @@ export class AuthController {
                 res.cookie("adminToken", token, {
                     httpOnly: true,
                     secure: false,
-                    sameSite: "strict",
+                    sameSite: "none",
                     maxAge: 60 * 60 * 1000, //1h
                 });
                 res.status(HttpStatus.OK).json({ message: Messages.LOGIN_SUCCESS });
@@ -40,7 +40,7 @@ export class AuthController {
         res.clearCookie("adminToken", {
             httpOnly: true,
             secure: false,
-            sameSite: "strict",
+            sameSite: "none",
         });
         res.status(HttpStatus.OK).json({ message: "Logged out successfully" });
     }

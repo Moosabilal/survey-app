@@ -10,7 +10,7 @@ const AdminLogin: React.FC = () => {
         password: ''
     });
     const [error, setError] = useState('');
-    const [loading, setLoading] = useState(true); // Start as true during check
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
     useEffect(() => {

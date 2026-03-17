@@ -1,0 +1,40 @@
+name: Deploy Survey App to AWS EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            set -e
+            cd ~/survey-app
+            git pull origin main
+
+            # Build & restart backend
+            cd backend
+            npm install
+            npm run build
+            pm2 restart survey-app-backend
+
+            # Build & restart frontend
+            cd ../frontend
+            npm install
+            npm run build
+            pm2 restart survey-app-frontend
+
+            echo "✅ Deployment complete"

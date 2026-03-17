@@ -8,7 +8,7 @@ const controller = container.get<AuthController>(AuthController);
 
 router.post("/login", (req, res) => controller.login(req, res));
 router.post("/logout", (req, res) => controller.logout(req, res));
-router.get("/verify", authMiddleware, (req, res) => {
+router.get("/verify", (req, res) => {
     res.status(200).json({ message: "Authenticated" });
 });
 

@@ -19,9 +19,9 @@ export class AuthController {
             if (token) {
                 res.cookie("adminToken", token, {
                     httpOnly: true,
-                    secure: process.env.NODE_ENV === "production",
-                    sameSite: "none",
-                    maxAge: 60 * 60 * 1000 // 1hr
+                    secure: false,
+                    sameSite: "strict",
+                    maxAge: 60 * 60 * 1000, //1h
                 });
                 res.status(HttpStatus.OK).json({ message: Messages.LOGIN_SUCCESS });
             } else {
@@ -39,8 +39,8 @@ export class AuthController {
     async logout(req: Request, res: Response) {
         res.clearCookie("adminToken", {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "none"
+            secure: false,
+            sameSite: "strict",
         });
         res.status(HttpStatus.OK).json({ message: "Logged out successfully" });
     }
